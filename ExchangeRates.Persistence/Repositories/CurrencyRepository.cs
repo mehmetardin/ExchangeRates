@@ -2,7 +2,6 @@
 using ExchangeRates.Persistence.Interfaces;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -11,7 +10,7 @@ namespace ExchangeRates.Persistence.Repositories
 {
     public class CurrencyRepository : ICurrencyRepository
     {
-       
+
 
         //We can use HttpClientFactory and use it via dependency injection later
         public async Task<CurrencyRateApiResponse> GetAvailableExchangeRatesByGivenCurrencyIdAsync(string id)
@@ -27,12 +26,12 @@ namespace ExchangeRates.Persistence.Repositories
                 var result = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<CurrencyRateApiResponse>(result);
             }
-
+            // http call error will be handle later
             return null;
         }
 
-       
 
-        
+
+
     }
 }
