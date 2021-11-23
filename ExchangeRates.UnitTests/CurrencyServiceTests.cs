@@ -18,7 +18,6 @@ namespace ExchangeRates.UnitTests
         private ICurrencyConvertService _currencyConvertService;
         private Mock<ICurrencyRepository> _currencyRepository;
 
-
         [SetUp]
         public void Setup()
         {
@@ -39,7 +38,7 @@ namespace ExchangeRates.UnitTests
             var request = new CurrencyConvertRequest
             {
                 Amount = 0,
-                SourceCurrencyId = "ABC",
+                SourceCurrencyId = "XXX",
                 TargetCurrencyId = "USD"
             };
 
