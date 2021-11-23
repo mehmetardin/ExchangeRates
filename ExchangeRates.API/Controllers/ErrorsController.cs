@@ -19,6 +19,7 @@ public class ErrorsController : ControllerBase
 
         if (exception is ArgumentOutOfRangeException) 
             code = 400; // Bad Request
+
         if (exception is KeyNotFoundException)
             code = 400; // Bad Request
 
