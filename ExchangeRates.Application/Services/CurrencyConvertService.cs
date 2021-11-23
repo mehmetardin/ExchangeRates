@@ -61,16 +61,17 @@ namespace ExchangeRates.Application.Services
 
         private void SetAvailableCurrencyRates(CurrencyRateApiResponse rates)
         {
-            Type ratesType = rates.Rates.GetType();
-            PropertyInfo[] properties = ratesType.GetProperties();
+            var ratesType = rates.Rates.GetType();
+            var properties = ratesType.GetProperties();
 
-            foreach (PropertyInfo property in properties)
+            foreach (var property in properties)
             {
-                var rate = new CurrencyRate();
-                rate.CurrencyId = property.Name.ToString().ToUpper();
-
-                var value = rates.Rates.GetType().GetProperty(property.Name.ToString()).GetValue(rates.Rates, null);
-                rate.Rate = System.Convert.ToDecimal(value);
+                var value = ratesType.GetProperty(property.Name).GetValue(rates.Rates, null);
+                var rate = new CurrencyRate
+                {
+                    CurrencyId = property.Name.ToString().ToUpper(),
+                    Rate = System.Convert.ToDecimal(value)
+                };
 
                 _availableCurrencyRates.Add(rate);
             }
