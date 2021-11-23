@@ -59,6 +59,8 @@ namespace ExchangeRates.Application.Services
             }
         }
 
+        //if external api could support available currencies,
+        //we could implement this method in Currency Repository and can fetch available currencies from external api
         private void SetAvailableCurrencyRates(CurrencyRateApiResponse rates)
         {
             var ratesType = rates.Rates.GetType();
@@ -77,6 +79,7 @@ namespace ExchangeRates.Application.Services
             }
         }
 
+        //This method also has to be implemented in Currency Repository
         private CurrencyRate GetCurrencyRateByCurrencyId(string targetCurrencyId)
         {
             var currencyRate = _availableCurrencyRates.FirstOrDefault(c => c.CurrencyId == targetCurrencyId);

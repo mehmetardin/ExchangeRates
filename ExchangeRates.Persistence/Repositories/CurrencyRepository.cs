@@ -10,8 +10,6 @@ namespace ExchangeRates.Persistence.Repositories
 {
     public class CurrencyRepository : ICurrencyRepository
     {
-
-
         //We can use HttpClientFactory and use it via dependency injection later
         public async Task<CurrencyRateApiResponse> GetAvailableExchangeRatesByGivenCurrencyIdAsync(string id)
         {
