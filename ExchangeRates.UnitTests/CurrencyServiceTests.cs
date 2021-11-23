@@ -107,10 +107,9 @@ namespace ExchangeRates.UnitTests
                 SourceCurrencyId = "GBP",
                 TargetCurrencyId = "USD"
             };
+            var expectedConvertedAmount = 3;
 
             var convertionResult = await _currencyConvertService.Convert(request);
-
-            var expectedConvertedAmount = 3;
 
             Assert.That(convertionResult.ConvertedAmount.Equals(expectedConvertedAmount));
         }
