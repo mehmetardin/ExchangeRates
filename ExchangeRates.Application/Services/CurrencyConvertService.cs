@@ -59,7 +59,7 @@ namespace ExchangeRates.Application.Services
             }
         }
 
-        //if external api could support available currencies,
+        //if external api could support available currencies proper format, instead of reflection,
         //we could implement this method in Currency Repository and can fetch available currencies from external api
         private void SetAvailableCurrencyRates(CurrencyRateApiResponse rates)
         {
