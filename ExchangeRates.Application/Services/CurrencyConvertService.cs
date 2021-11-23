@@ -34,10 +34,9 @@ namespace ExchangeRates.Application.Services
 
             SetAvailableCurrencyRates(availableExchangeRates);
 
-            var targerCurrencyRate = GetCurrencyRateByCurrencyId(currencyConvertRequest.TargetCurrencyId.ToUpper()).Rate;
+            var targerCurrencyRate = GetCurrencyRateByCurrencyId(currencyConvertRequest.TargetCurrencyId).Rate;
 
             var result = new CurrencyConvertResponse(currencyConvertRequest.Amount, currencyConvertRequest.SourceCurrencyId, currencyConvertRequest.TargetCurrencyId);
-
             result.ConvertedAmount = targerCurrencyRate * result.Amount;
             result.Rate = targerCurrencyRate;
 
@@ -82,7 +81,7 @@ namespace ExchangeRates.Application.Services
         //This method also has to be implemented in Currency Repository
         private CurrencyRate GetCurrencyRateByCurrencyId(string targetCurrencyId)
         {
-            var currencyRate = _availableCurrencyRates.FirstOrDefault(c => c.CurrencyId == targetCurrencyId);
+            var currencyRate = _availableCurrencyRates.FirstOrDefault(c => c.CurrencyId == targetCurrencyId.ToUpper());
 
             if (currencyRate == null)
                 throw new ArgumentOutOfRangeException($"{targetCurrencyId} is not available");
