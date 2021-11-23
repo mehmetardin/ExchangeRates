@@ -113,7 +113,7 @@ namespace ExchangeRates.UnitTests
 
             var expectedConvertedAmount = 3;
 
-            Assert.That(convertionResult.Value.ConvertedAmount.Equals(expectedConvertedAmount));
+            Assert.That(convertionResult.ConvertedAmount.Equals(expectedConvertedAmount));
         }
     }
 }

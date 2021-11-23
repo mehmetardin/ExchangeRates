@@ -1,5 +1,4 @@
-﻿using ExchangeRates.Application.Core;
-using ExchangeRates.Application.Dto;
+﻿using ExchangeRates.Application.Dto;
 using ExchangeRates.Application.Interfaces;
 using ExchangeRates.Domain;
 using ExchangeRates.Persistence.Interfaces;
@@ -24,7 +23,7 @@ namespace ExchangeRates.Application.Services
             _validator = validator;
         }
 
-        public async Task<Result<CurrencyConvertResponse>> Convert(CurrencyConvertRequest currencyConvertRequest)
+        public async Task<CurrencyConvertResponse> Convert(CurrencyConvertRequest currencyConvertRequest)
         {
             await ValidateArgumentsAsync(currencyConvertRequest);
 
@@ -42,7 +41,7 @@ namespace ExchangeRates.Application.Services
             result.ConvertedAmount = targerCurrencyRate * result.Amount;
             result.Rate = targerCurrencyRate;
 
-            return Result<CurrencyConvertResponse>.Success(result);
+            return result;
         }
 
         private async Task ValidateArgumentsAsync(CurrencyConvertRequest currencyConvertRequest)

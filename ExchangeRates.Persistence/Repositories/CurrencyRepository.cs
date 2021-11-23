@@ -30,8 +30,5 @@ namespace ExchangeRates.Persistence.Repositories
             return null;
         }
 
-
-
-
     }
 }

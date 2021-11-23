@@ -18,7 +18,7 @@ namespace ExchangeRates.API.Controllers
         [Route("Convert")]
         public async Task<IActionResult> Convert([FromQuery] CurrencyConvertRequest currencyConvertRequest)
         {
-            return HandleResult(await _currencyConvertService.Convert(currencyConvertRequest));
+            return Ok(await _currencyConvertService.Convert(currencyConvertRequest));
         }
     }
 }
