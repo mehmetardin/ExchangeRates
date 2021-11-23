@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace ExchangeRates.API.Controllers
 {
-    public class CurrenciesController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CurrenciesController : ControllerBase
     {
         private readonly ICurrencyConvertService _currencyConvertService;
 
