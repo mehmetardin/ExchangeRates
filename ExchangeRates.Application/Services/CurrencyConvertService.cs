@@ -47,14 +47,7 @@ namespace ExchangeRates.Application.Services
             var validationResult = await _validator.ValidateAsync(currencyConvertRequest);
 
             if (!validationResult.IsValid)
-            {
-                var errors = string.Empty;
-
-                foreach (var failure in validationResult.Errors)
-                    errors += "Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage;
-
-                throw new ArgumentOutOfRangeException(errors);
-            }
+                throw new ArgumentOutOfRangeException(string.Join(", ", validationResult.Errors));
         }
 
         //if external api could support available currencies proper format, instead of reflection,
