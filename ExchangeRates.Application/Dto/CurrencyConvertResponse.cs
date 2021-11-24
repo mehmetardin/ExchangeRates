@@ -14,6 +14,6 @@
         public decimal ConvertedAmount { get; set; }
         public string SourceCurrencyId { get; set; }
         public string TargetCurrencyId { get; set; }
-        
+
     }
 }

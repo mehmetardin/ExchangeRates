@@ -26,12 +26,12 @@ namespace ExchangeRates.Application.Services
         {
             await ValidateArgumentsAsync(currencyConvertRequest);
 
-            var availableExchangeRates = await _currencyRepository.GetAvailableExchangeRatesByGivenCurrencyIdAsync(currencyConvertRequest.SourceCurrencyId);
+            var availableExchangeRatesForSourceCurrency = await _currencyRepository.GetAvailableExchangeRatesByGivenCurrencyIdAsync(currencyConvertRequest.SourceCurrencyId);
 
-            if (availableExchangeRates == null)
+            if (availableExchangeRatesForSourceCurrency == null)
                 throw new KeyNotFoundException($"{currencyConvertRequest.SourceCurrencyId} is not a supported currency");
 
-            SetAvailableCurrencyRates(availableExchangeRates);
+            SetAvailableCurrencyRates(availableExchangeRatesForSourceCurrency);
 
             var targerCurrencyRate = GetCurrencyRateByCurrencyId(currencyConvertRequest.TargetCurrencyId).Rate;
 
