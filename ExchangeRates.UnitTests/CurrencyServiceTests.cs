@@ -21,11 +21,11 @@ namespace ExchangeRates.UnitTests
         [SetUp]
         public void Setup()
         {
-            var currencyRateList = new Rate { EUR = 1, GBP = 2, USD = 3 };
-            var currencyRate = new CurrencyRateApiResponse { Base = "GBP", Date = DateTime.Now, time_last_updated = 1, Rates = currencyRateList };
+            var availableCurrencyRatesForGBP = new Rate { EUR = 2, GBP = 1, USD = 3 };
+            var currencyWithAvailableCurrencyRates = new CurrencyRateApiResponse { Base = "GBP", Date = DateTime.Now, time_last_updated = 1, Rates = availableCurrencyRatesForGBP };
 
             _currencyRepository = new Mock<ICurrencyRepository>();
-            _currencyRepository.Setup(m => m.GetAvailableExchangeRatesByGivenCurrencyIdAsync("GBP")).Returns(Task.FromResult(currencyRate)).Verifiable();
+            _currencyRepository.Setup(m => m.GetAvailableExchangeRatesByGivenCurrencyIdAsync("GBP")).Returns(Task.FromResult(currencyWithAvailableCurrencyRates)).Verifiable();
 
             _validator = new CurrencyConvertRequestValidator();
 
