@@ -1,4 +1,5 @@
-﻿using ExchangeRates.Domain.Entities;
+﻿using ExchangeRates.Domain;
+using ExchangeRates.Domain.Entities;
 using ExchangeRates.Persistence.Interfaces;
 using Newtonsoft.Json;
 using System;
@@ -39,24 +40,18 @@ namespace ExchangeRates.Persistence.Repositories
             var ratesType = rates.Rates.GetType();
             var properties = ratesType.GetProperties();
 
+            var result = new CurrencyRates { SourceCurrencyId = rates.Base, CurrencyRate = null };
             foreach (var property in properties)
             {
-                var value = ratesType.GetProperty(property.Name).GetValue(rates.Rates, null);
-                var rate = new CurrencyRates
+                if (property.Name.ToString().ToUpper() == targetCurrencyId.ToUpper())
                 {
-                    TargetCurrencyId = property.Name.ToString().ToUpper(),
-                    SourceCurrencyId = rates.Base,
-                    CurrenyDate = rates.Date,
-                    Rate = Convert.ToDecimal(value)
-                };
-
-                if (rate.TargetCurrencyId == targetCurrencyId)
-                    return rate;
+                    var value = ratesType.GetProperty(property.Name).GetValue(rates.Rates, null);
+                    var currencyRate = new CurrencyRate { CurrencyId = targetCurrencyId, CurrenyDate = rates.Date, Rate = Convert.ToDecimal(value) };
+                    result.CurrencyRate = currencyRate;
+                }
             }
 
-            return null;
+            return result;
         }
-
-
     }
 }

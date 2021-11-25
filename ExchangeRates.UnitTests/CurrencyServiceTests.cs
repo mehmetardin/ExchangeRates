@@ -22,10 +22,11 @@ namespace ExchangeRates.UnitTests
         [SetUp]
         public void Setup()
         {
-            var currencyWithAvailableCurrencyRates = new CurrencyRates {  CurrenyDate = DateTime.Now, Rate = 3, SourceCurrencyId = "GBP", TargetCurrencyId = "USD" };
+            var currencyRate = new CurrencyRate { CurrencyId = "USD", Rate = 3, CurrenyDate = DateTime.Now };
+            var currencyWithAvailableCurrencyRates = new CurrencyRates { SourceCurrencyId = "GBP", CurrencyRate = currencyRate };
 
             _currencyRepository = new Mock<ICurrencyRepository>();
-            _currencyRepository.Setup(m => m.GetTargetCurrencyExchangeRateByGivenSourceCurrencyId("GBP","USD")).Returns(Task.FromResult(currencyWithAvailableCurrencyRates)).Verifiable();
+            _currencyRepository.Setup(m => m.GetTargetCurrencyExchangeRateByGivenSourceCurrencyId("GBP", "USD")).Returns(Task.FromResult(currencyWithAvailableCurrencyRates)).Verifiable();
 
             _validator = new CurrencyConvertRequestValidator();
 

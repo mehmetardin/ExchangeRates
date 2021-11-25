@@ -28,15 +28,17 @@ namespace ExchangeRates.Application.Services
             if (targetExchangeRate == null)
                 throw new KeyNotFoundException($"{currencyConvertRequest.SourceCurrencyId} is not a supported currency");
 
+            if(targetExchangeRate.CurrencyRate == null)
+                throw new KeyNotFoundException($"{currencyConvertRequest.TargetCurrencyId} is not a supported currency");
+
             return new CurrencyConvertResponse
             {
                 Amount = currencyConvertRequest.Amount,
                 SourceCurrencyId = currencyConvertRequest.SourceCurrencyId,
                 TargetCurrencyId = currencyConvertRequest.TargetCurrencyId,
-                ConvertedAmount = targetExchangeRate.Rate * currencyConvertRequest.Amount,
-                Rate = targetExchangeRate.Rate
+                ConvertedAmount = targetExchangeRate.CurrencyRate.Rate * currencyConvertRequest.Amount,
+                Rate = targetExchangeRate.CurrencyRate.Rate
             };
-
         }
 
         private async Task ValidateArgumentsAsync(CurrencyConvertRequest currencyConvertRequest)
