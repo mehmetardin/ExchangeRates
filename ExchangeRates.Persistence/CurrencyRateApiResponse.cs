@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ExchangeRates.Domain
+namespace ExchangeRates.Persistence
 {
-    public class CurrencyRateApiResponse
+    internal class CurrencyRateApiResponse
     {
         public string Base { get; set; }
         public DateTime Date { get; set; }

@@ -3,6 +3,7 @@ using ExchangeRates.Application.Interfaces;
 using ExchangeRates.Application.Services;
 using ExchangeRates.Application.Validations;
 using ExchangeRates.Domain;
+using ExchangeRates.Domain.Entities;
 using ExchangeRates.Persistence.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -21,11 +22,10 @@ namespace ExchangeRates.UnitTests
         [SetUp]
         public void Setup()
         {
-            var availableCurrencyRatesForGBP = new Rate { EUR = 2, GBP = 1, USD = 3 };
-            var currencyWithAvailableCurrencyRates = new CurrencyRateApiResponse { Base = "GBP", Date = DateTime.Now, time_last_updated = 1, Rates = availableCurrencyRatesForGBP };
+            var currencyWithAvailableCurrencyRates = new CurrencyRates {  CurrenyDate = DateTime.Now, Rate = 3, SourceCurrencyId = "GBP", TargetCurrencyId = "USD" };
 
             _currencyRepository = new Mock<ICurrencyRepository>();
-            _currencyRepository.Setup(m => m.GetAvailableExchangeRatesByGivenCurrencyIdAsync("GBP")).Returns(Task.FromResult(currencyWithAvailableCurrencyRates)).Verifiable();
+            _currencyRepository.Setup(m => m.GetTargetCurrencyExchangeRateByGivenSourceCurrencyId("GBP","USD")).Returns(Task.FromResult(currencyWithAvailableCurrencyRates)).Verifiable();
 
             _validator = new CurrencyConvertRequestValidator();
 

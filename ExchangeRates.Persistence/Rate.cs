@@ -1,6 +1,6 @@
-﻿namespace ExchangeRates.Domain
+﻿namespace ExchangeRates.Persistence
 {
-    public class Rate
+    internal class Rate
     {
         public decimal GBP { get; set; }
         public decimal EUR { get; set; }

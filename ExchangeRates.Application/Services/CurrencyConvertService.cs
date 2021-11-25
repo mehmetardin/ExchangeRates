@@ -1,11 +1,9 @@
 ﻿using ExchangeRates.Application.Dto;
 using ExchangeRates.Application.Interfaces;
-using ExchangeRates.Domain;
 using ExchangeRates.Persistence.Interfaces;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ExchangeRates.Application.Services
@@ -14,7 +12,6 @@ namespace ExchangeRates.Application.Services
     {
         private readonly ICurrencyRepository _currencyRepository;
         private readonly IValidator<CurrencyConvertRequest> _validator;
-        private List<CurrencyRate> _availableCurrencyRates = new();
 
         public CurrencyConvertService(ICurrencyRepository currencyRepository, IValidator<CurrencyConvertRequest> validator)
         {
@@ -26,20 +23,20 @@ namespace ExchangeRates.Application.Services
         {
             await ValidateArgumentsAsync(currencyConvertRequest);
 
-            var availableExchangeRatesForSourceCurrency = await _currencyRepository.GetAvailableExchangeRatesByGivenCurrencyIdAsync(currencyConvertRequest.SourceCurrencyId);
+            var targetExchangeRate = await _currencyRepository.GetTargetCurrencyExchangeRateByGivenSourceCurrencyId(currencyConvertRequest.SourceCurrencyId, currencyConvertRequest.TargetCurrencyId);
 
-            if (availableExchangeRatesForSourceCurrency == null)
+            if (targetExchangeRate == null)
                 throw new KeyNotFoundException($"{currencyConvertRequest.SourceCurrencyId} is not a supported currency");
 
-            SetAvailableCurrencyRates(availableExchangeRatesForSourceCurrency);
+            return new CurrencyConvertResponse
+            {
+                Amount = currencyConvertRequest.Amount,
+                SourceCurrencyId = currencyConvertRequest.SourceCurrencyId,
+                TargetCurrencyId = currencyConvertRequest.TargetCurrencyId,
+                ConvertedAmount = targetExchangeRate.Rate * currencyConvertRequest.Amount,
+                Rate = targetExchangeRate.Rate
+            };
 
-            var targerCurrencyRate = GetCurrencyRateByCurrencyId(currencyConvertRequest.TargetCurrencyId).Rate;
-
-            var result = new CurrencyConvertResponse(currencyConvertRequest.Amount, currencyConvertRequest.SourceCurrencyId, currencyConvertRequest.TargetCurrencyId);
-            result.ConvertedAmount = targerCurrencyRate * result.Amount;
-            result.Rate = targerCurrencyRate;
-
-            return result;
         }
 
         private async Task ValidateArgumentsAsync(CurrencyConvertRequest currencyConvertRequest)
@@ -48,37 +45,6 @@ namespace ExchangeRates.Application.Services
 
             if (!validationResult.IsValid)
                 throw new ArgumentOutOfRangeException(string.Join(", ", validationResult.Errors));
-        }
-
-        //if external api could support available currencies proper format, instead of reflection,
-        //we could implement this method in Currency Repository and can fetch available currencies from external api
-        private void SetAvailableCurrencyRates(CurrencyRateApiResponse rates)
-        {
-            var ratesType = rates.Rates.GetType();
-            var properties = ratesType.GetProperties();
-
-            foreach (var property in properties)
-            {
-                var value = ratesType.GetProperty(property.Name).GetValue(rates.Rates, null);
-                var rate = new CurrencyRate
-                {
-                    CurrencyId = property.Name.ToString().ToUpper(),
-                    Rate = System.Convert.ToDecimal(value)
-                };
-
-                _availableCurrencyRates.Add(rate);
-            }
-        }
-
-        //This method also has to be implemented in Currency Repository
-        private CurrencyRate GetCurrencyRateByCurrencyId(string targetCurrencyId)
-        {
-            var currencyRate = _availableCurrencyRates.FirstOrDefault(c => c.CurrencyId == targetCurrencyId.ToUpper());
-
-            if (currencyRate == null)
-                throw new ArgumentOutOfRangeException($"{targetCurrencyId} is not available");
-
-            return currencyRate;
         }
 
     }

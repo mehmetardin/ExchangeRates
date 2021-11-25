@@ -1,10 +1,11 @@
-﻿using ExchangeRates.Domain;
+﻿using ExchangeRates.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace ExchangeRates.Persistence.Interfaces
 {
     public interface ICurrencyRepository
     {
-        public Task<CurrencyRateApiResponse> GetAvailableExchangeRatesByGivenCurrencyIdAsync(string id);
+        public Task<CurrencyRates> GetTargetCurrencyExchangeRateByGivenSourceCurrencyId(string sourceCurrencyId, string targetCurrencyId);
+
     }
 }
