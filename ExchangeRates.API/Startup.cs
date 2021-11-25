@@ -2,6 +2,8 @@ using ExchangeRates.Application.Dto;
 using ExchangeRates.Application.Interfaces;
 using ExchangeRates.Application.Services;
 using ExchangeRates.Application.Validations;
+using ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService;
+using ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService.Interfaces;
 using ExchangeRates.Persistence.Interfaces;
 using ExchangeRates.Persistence.Repositories;
 using FluentValidation;
@@ -36,6 +38,7 @@ namespace ExchangeRates.API
             services.AddScoped<ICurrencyConvertService, CurrencyConvertService>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<IValidator<CurrencyConvertRequest>, CurrencyConvertRequestValidator>();
+            services.AddScoped<IExternalCurrencyService, ExternalCurrencyService>();
             services.AddHttpClient();
 
         }

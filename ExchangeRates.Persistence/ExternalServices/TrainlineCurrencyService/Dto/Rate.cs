@@ -1,4 +1,4 @@
-﻿namespace ExchangeRates.Persistence
+﻿namespace ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService.Dto
 {
     internal class Rate
     {
