@@ -22,8 +22,8 @@ namespace ExchangeRates.UnitTests
         [SetUp]
         public void Setup()
         {
-            var currencyRate = new CurrencyRate { CurrencyId = "USD", Rate = 3, CurrenyDate = DateTime.Now };
-            var currencyWithAvailableCurrencyRates = new CurrencyRates { SourceCurrencyId = "GBP", CurrencyRate = currencyRate };
+            var currencyRate = new CurrencyRateInfo { Id = "USD", Rate = 3, Date = DateTime.Now };
+            var currencyWithAvailableCurrencyRates = new CurrencyRate { SourceCurrencyId = "GBP", TargetCurrency = currencyRate };
 
             _currencyRepository = new Mock<ICurrencyRepository>();
             _currencyRepository.Setup(m => m.GetTargetCurrencyExchangeRateByGivenSourceCurrencyId("GBP", "USD")).Returns(Task.FromResult(currencyWithAvailableCurrencyRates)).Verifiable();

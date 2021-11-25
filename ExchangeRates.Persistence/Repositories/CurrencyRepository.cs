@@ -11,13 +11,13 @@ namespace ExchangeRates.Persistence.Repositories
 {
     public class CurrencyRepository : ICurrencyRepository
     {
-        public async Task<CurrencyRates> GetTargetCurrencyExchangeRateByGivenSourceCurrencyId(string sourceCurrencyId, string targetCurrencyId)
+        public async Task<CurrencyRate> GetTargetCurrencyExchangeRateByGivenSourceCurrencyId(string sourceCurrencyId, string targetCurrencyId)
         {
             return await GetCurrencyAndAvailableRatesAsync(sourceCurrencyId, targetCurrencyId);
         }
 
         //We can use HttpClientFactory and use it via dependency injection later
-        private static async Task<CurrencyRates> GetCurrencyAndAvailableRatesAsync(string sourceCurrencyId, string targetCurrencyId)
+        private static async Task<CurrencyRate> GetCurrencyAndAvailableRatesAsync(string sourceCurrencyId, string targetCurrencyId)
         {
             var url = $"https://trainlinerecruitment.github.io/exchangerates/api/latest/{sourceCurrencyId.ToUpper()}.json";
             HttpClient client = new();
@@ -35,19 +35,19 @@ namespace ExchangeRates.Persistence.Repositories
             return null;
         }
 
-        private static CurrencyRates GetTargetCurrencyRate(CurrencyRateApiResponse rates, string targetCurrencyId)
+        private static CurrencyRate GetTargetCurrencyRate(CurrencyRateApiResponse rates, string targetCurrencyId)
         {
             var ratesType = rates.Rates.GetType();
             var properties = ratesType.GetProperties();
 
-            var result = new CurrencyRates { SourceCurrencyId = rates.Base, CurrencyRate = null };
+            var result = new CurrencyRate { SourceCurrencyId = rates.Base, TargetCurrency = null };
             foreach (var property in properties)
             {
                 if (property.Name.ToString().ToUpper() == targetCurrencyId.ToUpper())
                 {
                     var value = ratesType.GetProperty(property.Name).GetValue(rates.Rates, null);
-                    var currencyRate = new CurrencyRate { CurrencyId = targetCurrencyId, CurrenyDate = rates.Date, Rate = Convert.ToDecimal(value) };
-                    result.CurrencyRate = currencyRate;
+                    var currencyRate = new CurrencyRateInfo { Id = targetCurrencyId, Date = rates.Date, Rate = Convert.ToDecimal(value) };
+                    result.TargetCurrency = currencyRate;
                 }
             }
 

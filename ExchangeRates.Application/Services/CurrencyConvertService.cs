@@ -23,12 +23,12 @@ namespace ExchangeRates.Application.Services
         {
             await ValidateArgumentsAsync(currencyConvertRequest);
 
-            var targetExchangeRate = await _currencyRepository.GetTargetCurrencyExchangeRateByGivenSourceCurrencyId(currencyConvertRequest.SourceCurrencyId, currencyConvertRequest.TargetCurrencyId);
+            var targetCurrencyExchangeRate = await _currencyRepository.GetTargetCurrencyExchangeRateByGivenSourceCurrencyId(currencyConvertRequest.SourceCurrencyId, currencyConvertRequest.TargetCurrencyId);
 
-            if (targetExchangeRate == null)
+            if (targetCurrencyExchangeRate == null)
                 throw new KeyNotFoundException($"{currencyConvertRequest.SourceCurrencyId} is not a supported currency");
 
-            if(targetExchangeRate.CurrencyRate == null)
+            if(targetCurrencyExchangeRate.TargetCurrency == null)
                 throw new KeyNotFoundException($"{currencyConvertRequest.TargetCurrencyId} is not a supported currency");
 
             return new CurrencyConvertResponse
@@ -36,8 +36,8 @@ namespace ExchangeRates.Application.Services
                 Amount = currencyConvertRequest.Amount,
                 SourceCurrencyId = currencyConvertRequest.SourceCurrencyId,
                 TargetCurrencyId = currencyConvertRequest.TargetCurrencyId,
-                ConvertedAmount = targetExchangeRate.CurrencyRate.Rate * currencyConvertRequest.Amount,
-                Rate = targetExchangeRate.CurrencyRate.Rate
+                ConvertedAmount = targetCurrencyExchangeRate.TargetCurrency.Rate * currencyConvertRequest.Amount,
+                Rate = targetCurrencyExchangeRate.TargetCurrency.Rate
             };
         }
 

@@ -2,9 +2,9 @@
 
 namespace ExchangeRates.Domain.Entities
 {
-    public class CurrencyRates
+    public class CurrencyRate
     {
         public string SourceCurrencyId { get; set; }
-        public CurrencyRate CurrencyRate { get; set; }  
+        public CurrencyRateInfo TargetCurrency { get; set; }  
     }
 }
