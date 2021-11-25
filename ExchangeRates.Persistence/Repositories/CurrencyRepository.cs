@@ -11,12 +11,12 @@ namespace ExchangeRates.Persistence.Repositories
 {
     public class CurrencyRepository : ICurrencyRepository
     {
-        //We can use HttpClientFactory and use it via dependency injection later
         public async Task<CurrencyRates> GetTargetCurrencyExchangeRateByGivenSourceCurrencyId(string sourceCurrencyId, string targetCurrencyId)
         {
             return await GetCurrencyAndAvailableRatesAsync(sourceCurrencyId, targetCurrencyId);
         }
 
+        //We can use HttpClientFactory and use it via dependency injection later
         private static async Task<CurrencyRates> GetCurrencyAndAvailableRatesAsync(string sourceCurrencyId, string targetCurrencyId)
         {
             var url = $"https://trainlinerecruitment.github.io/exchangerates/api/latest/{sourceCurrencyId.ToUpper()}.json";
