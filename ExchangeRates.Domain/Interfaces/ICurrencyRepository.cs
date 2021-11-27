@@ -1,7 +1,7 @@
 ﻿using ExchangeRates.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace ExchangeRates.Persistence.Interfaces
+namespace ExchangeRates.Domain.Interfaces
 {
     public interface ICurrencyRepository
     {

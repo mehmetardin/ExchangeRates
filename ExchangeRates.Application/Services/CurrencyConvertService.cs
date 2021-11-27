@@ -1,6 +1,6 @@
 ﻿using ExchangeRates.Application.Dto;
 using ExchangeRates.Application.Interfaces;
-using ExchangeRates.Persistence.Interfaces;
+using ExchangeRates.Domain.Interfaces;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

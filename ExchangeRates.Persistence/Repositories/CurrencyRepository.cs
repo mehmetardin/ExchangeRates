@@ -1,6 +1,6 @@
 ﻿using ExchangeRates.Domain.Entities;
+using ExchangeRates.Domain.Interfaces;
 using ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService.Interfaces;
-using ExchangeRates.Persistence.Interfaces;
 using System.Threading.Tasks;
 
 namespace ExchangeRates.Persistence.Repositories

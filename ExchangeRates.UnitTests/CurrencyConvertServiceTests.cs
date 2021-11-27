@@ -4,7 +4,7 @@ using ExchangeRates.Application.Services;
 using ExchangeRates.Application.Validations;
 using ExchangeRates.Domain;
 using ExchangeRates.Domain.Entities;
-using ExchangeRates.Persistence.Interfaces;
+using ExchangeRates.Domain.Interfaces;
 using Moq;
 using NUnit.Framework;
 using System;
