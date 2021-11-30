@@ -39,7 +39,7 @@ namespace ExchangeRates.API
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<IValidator<CurrencyConvertRequest>, CurrencyConvertRequestValidator>();
             services.AddScoped<IExternalCurrencyService, ExternalCurrencyService>();
-            services.AddHttpClient();
+            services.AddHttpClient<IExternalCurrencyService, ExternalCurrencyService>();
 
         }
 

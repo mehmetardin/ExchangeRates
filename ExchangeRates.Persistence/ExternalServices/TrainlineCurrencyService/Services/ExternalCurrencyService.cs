@@ -12,13 +12,19 @@ namespace ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService
 {
     public class ExternalCurrencyService : IExternalCurrencyService
     {
+        private readonly HttpClient _client;
+
+        public ExternalCurrencyService(HttpClient client)
+        {
+            _client = client;
+        }
+
         public async Task<CurrencyRate> GetCurrencyAndAvailableRatesAsync(string sourceCurrencyId, string targetCurrencyId)
         {
             var url = $"https://trainlinerecruitment.github.io/exchangerates/api/latest/{sourceCurrencyId.ToUpper()}.json";
-            HttpClient client = new();
-            client.BaseAddress = new Uri(url);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = client.GetAsync(url).Result;
+            _client.BaseAddress = new Uri(url);
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = _client.GetAsync(url).Result;
 
             if (response.IsSuccessStatusCode)
             {
