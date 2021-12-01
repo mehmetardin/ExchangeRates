@@ -13,6 +13,7 @@ namespace ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService
     public class ExternalCurrencyService : IExternalCurrencyService
     {
         private readonly HttpClient _client;
+        private const string _baseUrl = "https://trainlinerecruitment.github.io/exchangerates/api";
 
         public ExternalCurrencyService(HttpClient client)
         {
@@ -21,10 +22,10 @@ namespace ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService
 
         public async Task<CurrencyRate> GetCurrencyAndAvailableRatesAsync(string sourceCurrencyId, string targetCurrencyId)
         {
-            var url = $"https://trainlinerecruitment.github.io/exchangerates/api/latest/{sourceCurrencyId.ToUpper()}.json";
+            var url = $"{_baseUrl}/latest/{sourceCurrencyId.ToUpper()}.json";
             _client.BaseAddress = new Uri(url);
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = _client.GetAsync(url).Result;
+            var response = _client.GetAsync(url).Result;
 
             if (response.IsSuccessStatusCode)
             {
