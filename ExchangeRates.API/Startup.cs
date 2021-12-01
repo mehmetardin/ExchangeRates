@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace ExchangeRates.API
 {
@@ -39,7 +40,11 @@ namespace ExchangeRates.API
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<IValidator<CurrencyConvertRequest>, CurrencyConvertRequestValidator>();
             services.AddScoped<IExternalCurrencyService, ExternalCurrencyService>();
-            services.AddHttpClient<IExternalCurrencyService, ExternalCurrencyService>();
+
+            services.AddHttpClient<IExternalCurrencyService, ExternalCurrencyService>(opt =>
+            {
+                opt.BaseAddress = new Uri(Configuration["ExchangeRatesApiURL"]);
+            });
 
         }
 
