@@ -40,16 +40,15 @@ namespace ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService
         private static CurrencyRate GetTargetCurrencyRate(CurrencyRateApiResponse rates, string targetCurrencyId)
         {
             var ratesType = rates.Rates.GetType();
-            var properties = ratesType.GetProperties();
 
-            var result = new CurrencyRate { SourceCurrencyId = rates.Base, TargetCurrency = null };
-            foreach (var property in properties)
+            var result = new CurrencyRate { SourceCurrencyId = rates.Base };
+
+            foreach (var property in ratesType.GetProperties())
             {
                 if (property.Name.ToString().ToUpper() == targetCurrencyId.ToUpper())
                 {
-                    var value = ratesType.GetProperty(property.Name).GetValue(rates.Rates, null);
-                    var currencyRate = new CurrencyRateInfo { Id = targetCurrencyId, Date = rates.Date, Rate = Convert.ToDecimal(value) };
-                    result.TargetCurrency = currencyRate;
+                    var targetCurrencyRate = ratesType.GetProperty(property.Name).GetValue(rates.Rates, null);
+                    result.TargetCurrency = new CurrencyRateInfo { Id = targetCurrencyId, Date = rates.Date, Rate = Convert.ToDecimal(targetCurrencyRate) };
                 }
             }
 
