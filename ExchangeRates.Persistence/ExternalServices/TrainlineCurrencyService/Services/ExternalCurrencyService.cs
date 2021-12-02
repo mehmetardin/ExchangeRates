@@ -4,25 +4,22 @@ using ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService.Dto;
 using ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService.Interfaces;
 using Newtonsoft.Json;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService
 {
     public class ExternalCurrencyService : IExternalCurrencyService
     {
-        private readonly HttpClient _client;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ExternalCurrencyService(HttpClient client)
-        {
-            _client = client;
-        }
+        public ExternalCurrencyService(IHttpClientFactory httpClientFactory) =>
+        _httpClientFactory = httpClientFactory;
 
         public async Task<CurrencyRate> GetCurrencyAndAvailableRatesAsync(string sourceCurrencyId, string targetCurrencyId)
         {
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var httpClient = _httpClientFactory.CreateClient("TrainLine");
 
-            var response = await _client.GetAsync($"latest/{sourceCurrencyId.ToUpper()}.json");
+            var response = await httpClient.GetAsync($"latest/{sourceCurrencyId.ToUpper()}.json");
 
             if (response.IsSuccessStatusCode)
             {

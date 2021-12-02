@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using System;
 
@@ -41,11 +42,11 @@ namespace ExchangeRates.API
             services.AddScoped<IValidator<CurrencyConvertRequest>, CurrencyConvertRequestValidator>();
             services.AddScoped<IExternalCurrencyService, ExternalCurrencyService>();
 
-            services.AddHttpClient<IExternalCurrencyService, ExternalCurrencyService>(opt =>
+            services.AddHttpClient("TrainLine", httpClient =>
             {
-                opt.BaseAddress = new Uri(Configuration["ExchangeRatesApiURL"]);
+                httpClient.BaseAddress = new Uri(Configuration["ExchangeRatesApiURL"]);
+                httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
