@@ -30,19 +30,18 @@ namespace ExchangeRates.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExchangeRates.API", Version = "v1" });
             });
 
-            services.AddScoped<ICurrencyConvertService, CurrencyConvertService>();
-            services.AddScoped<ICurrencyRepository, CurrencyRepository>();
-            services.AddScoped<IValidator<CurrencyConvertRequest>, CurrencyConvertRequestValidator>();
-            services.AddScoped<IExternalCurrencyService, ExternalCurrencyService>();
+            services.AddTransient<ICurrencyConvertService, CurrencyConvertService>();
+            services.AddTransient<ICurrencyRepository, CurrencyRepository>();
+            services.AddTransient<IValidator<CurrencyConvertRequest>, CurrencyConvertRequestValidator>();
+            services.AddTransient<IExternalCurrencyService, ExternalCurrencyService>();
 
-            services.AddHttpClient("TrainLine", httpClient =>
+            services.AddHttpClient("CurrencyApi", httpClient =>
             {
                 httpClient.BaseAddress = new Uri(Configuration["ExchangeRatesApiURL"]);
                 httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");

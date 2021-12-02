@@ -17,7 +17,7 @@ namespace ExchangeRates.Persistence.ExternalServices.TrainlineCurrencyService
 
         public async Task<CurrencyRate> GetCurrencyAndAvailableRatesAsync(string sourceCurrencyId, string targetCurrencyId)
         {
-            var httpClient = _httpClientFactory.CreateClient("TrainLine");
+            var httpClient = _httpClientFactory.CreateClient("CurrencyApi");
 
             var response = await httpClient.GetAsync($"latest/{sourceCurrencyId.ToUpper()}.json");
 
