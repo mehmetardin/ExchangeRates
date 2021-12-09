@@ -55,12 +55,12 @@ namespace ExchangeRates.UnitTests
         {
             var request = new CurrencyConvertRequest
             {
-                Amount = 0,
+                Amount = 1,
                 SourceCurrencyId = "GBP",
                 TargetCurrencyId = "XXX"
             };
 
-            Assert.That(() => _currencyConvertService.Convert(request), Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => _currencyConvertService.Convert(request), Throws.Exception.TypeOf<KeyNotFoundException>());
         }
 
         [Test]
