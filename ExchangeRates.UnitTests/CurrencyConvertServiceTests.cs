@@ -23,6 +23,7 @@ namespace ExchangeRates.UnitTests
         public void Setup()
         {
             var currencyRate = new CurrencyRateInfo { Id = "USD", Rate = 3, Date = DateTime.Now };
+
             var currencyWithAvailableCurrencyRates = new CurrencyRate { SourceCurrencyId = "GBP", TargetCurrency = currencyRate };
 
             _currencyRepository = new Mock<ICurrencyRepository>();
@@ -33,25 +34,15 @@ namespace ExchangeRates.UnitTests
             _currencyConvertService = new CurrencyConvertService(_currencyRepository.Object, _validator);
         }
 
+       
         [Test]
-        public void Convert_WhenTargetCurrencyRateNotAvailable_ExpectArgumentOutOfRangeException()
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void Convert_WhenRequestedAmountLessesOrEqualToZero_ExpectArgumentOutOfRangeException(int amount)
         {
             var request = new CurrencyConvertRequest
             {
-                Amount = 0,
-                SourceCurrencyId = "XXX",
-                TargetCurrencyId = "USD"
-            };
-
-            Assert.That(() => _currencyConvertService.Convert(request), Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
-        }
-
-        [Test]
-        public void Convert_WhenRequestedAmountLessesOrEqualToZero_ExpectArgumentOutOfRangeException()
-        {
-            var request = new CurrencyConvertRequest
-            {
-                Amount = 0,
+                Amount = amount,
                 SourceCurrencyId = "GBP",
                 TargetCurrencyId = "USD"
             };
