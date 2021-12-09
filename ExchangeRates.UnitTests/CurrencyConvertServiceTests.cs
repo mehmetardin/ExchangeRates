@@ -51,26 +51,28 @@ namespace ExchangeRates.UnitTests
         }
 
         [Test]
-        public void Convert_WhenTargetCurrencyNotAvailable_ExpectArgumentOutOfRangeException()
+        [TestCase(1, "GBP", "XXX")]
+        public void Convert_WhenTargetCurrencyNotAvailable_ExpectArgumentOutOfRangeException(int amount, string sourceCurrencyId, string targetCurrencyId)
         {
             var request = new CurrencyConvertRequest
             {
-                Amount = 1,
-                SourceCurrencyId = "GBP",
-                TargetCurrencyId = "XXX"
+                Amount = amount,
+                SourceCurrencyId = sourceCurrencyId,
+                TargetCurrencyId = targetCurrencyId
             };
 
             Assert.That(() => _currencyConvertService.Convert(request), Throws.Exception.TypeOf<KeyNotFoundException>());
         }
 
         [Test]
-        public void Convert_WhenSourceCurrencyNotAvailable_ExpectKeyNotFoundException()
+        [TestCase(1, "XXX", "USD")]
+        public void Convert_WhenSourceCurrencyNotAvailable_ExpectKeyNotFoundException(int amount, string sourceCurrencyId, string targetCurrencyId)
         {
             var request = new CurrencyConvertRequest
             {
-                Amount = 1,
-                SourceCurrencyId = "XXX",
-                TargetCurrencyId = "USD"
+                Amount = amount,
+                SourceCurrencyId = sourceCurrencyId,
+                TargetCurrencyId = targetCurrencyId
             };
 
             Assert.That(() => _currencyConvertService.Convert(request), Throws.Exception.TypeOf<KeyNotFoundException>());
@@ -78,13 +80,14 @@ namespace ExchangeRates.UnitTests
 
 
         [Test]
-        public void Convert_WhenSourceAndTargetCurrencyAreSame_ExpectArgumentOutOfRangeException()
+        [TestCase(1, "GBP", "GBP")]
+        public void Convert_WhenSourceAndTargetCurrencyAreSame_ExpectArgumentOutOfRangeException(int amount, string sourceCurrencyId, string targetCurrencyId)
         {
             var request = new CurrencyConvertRequest
             {
-                Amount = 1,
-                SourceCurrencyId = "GBP",
-                TargetCurrencyId = "GBP"
+                Amount = amount,
+                SourceCurrencyId = sourceCurrencyId,
+                TargetCurrencyId = targetCurrencyId
             };
 
             Assert.That(() => _currencyConvertService.Convert(request), Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
