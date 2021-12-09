@@ -100,19 +100,21 @@ namespace ExchangeRates.UnitTests
         }
 
         [Test]
-        public async Task Convert_WhenCall_ConvertedAmountShouldSameWithExpectedConvertedAmount()
+        [TestCase(1, 3)]
+        [TestCase(2, 6)]
+        [TestCase(3, 9)]
+        public async Task Convert_WhenCall_ConvertedAmountShouldSameWithExpectedConvertedAmount(int amount, int expected)
         {
             var request = new CurrencyConvertRequest
             {
-                Amount = 1,
+                Amount = amount,
                 SourceCurrencyId = "GBP",
                 TargetCurrencyId = "USD"
             };
-            var expectedConvertedAmount = 3;
 
             var convertionResult = await _currencyConvertService.Convert(request);
 
-            Assert.That(convertionResult.ConvertedAmount.Equals(expectedConvertedAmount));
+            Assert.That(convertionResult.ConvertedAmount.Equals(expected));
         }
     }
 }
