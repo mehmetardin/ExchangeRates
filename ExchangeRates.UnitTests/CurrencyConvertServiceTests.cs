@@ -39,7 +39,7 @@ namespace ExchangeRates.UnitTests
         [Test]
         [TestCase(-1)]
         [TestCase(0)]
-        public void Convert_WhenRequestedAmountLessesOrEqualToZero_ExpectArgumentOutOfRangeException(int amount)
+        public void Convert_WhenRequestedAmountLesserOrEqualToZero_ThrowArgumentOutOfRangeException(int amount)
         {
             var request = new CurrencyConvertRequest
             {
@@ -53,7 +53,7 @@ namespace ExchangeRates.UnitTests
 
         [Test]
         [TestCase(1, "GBP", "XXX")]
-        public void Convert_WhenTargetCurrencyNotAvailable_ExpectArgumentOutOfRangeException(int amount, string sourceCurrencyId, string targetCurrencyId)
+        public void Convert_WhenTargetCurrencyNotAvailable_ThrowKeyNotFoundException(int amount, string sourceCurrencyId, string targetCurrencyId)
         {
             var request = new CurrencyConvertRequest
             {
@@ -67,7 +67,7 @@ namespace ExchangeRates.UnitTests
 
         [Test]
         [TestCase(1, "XXX", "USD")]
-        public void Convert_WhenSourceCurrencyNotAvailable_ExpectKeyNotFoundException(int amount, string sourceCurrencyId, string targetCurrencyId)
+        public void Convert_WhenSourceCurrencyNotAvailable_ThrowKeyNotFoundException(int amount, string sourceCurrencyId, string targetCurrencyId)
         {
             var request = new CurrencyConvertRequest
             {
@@ -82,7 +82,7 @@ namespace ExchangeRates.UnitTests
 
         [Test]
         [TestCase(1, "GBP", "GBP")]
-        public void Convert_WhenSourceAndTargetCurrencyAreSame_ExpectArgumentOutOfRangeException(int amount, string sourceCurrencyId, string targetCurrencyId)
+        public void Convert_WhenSourceAndTargetCurrencyAreSame_ThrowArgumentOutOfRangeException(int amount, string sourceCurrencyId, string targetCurrencyId)
         {
             var request = new CurrencyConvertRequest
             {
@@ -98,7 +98,7 @@ namespace ExchangeRates.UnitTests
         [TestCase(1, 3)]
         [TestCase(2, 6)]
         [TestCase(3, 9)]
-        public async Task Convert_WhenCall_ConvertedAmountShouldSameWithExpectedConvertedAmount(int amount, int expected)
+        public async Task Convert_WhenCall_ConvertedAmountShouldSameWithExpected(int amount, int expected)
         {
             var request = new CurrencyConvertRequest
             {
